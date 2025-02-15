@@ -1,0 +1,13 @@
+Django>=5.1
+gunicorn>=21.2.0
+boto3>=1.28.0
+botocore>=1.31.0
+requests>=2.31.0
+torch>=2.0.0
+transformers>=4.33.0
+spacy>=3.6.0
+ultralytics>=8.0.0
+opencv-python>=4.8.0.74
+numpy>=1.23.5
+django-storages[boto3]>=1.13.2
+django-cors-headers>=4.2.0

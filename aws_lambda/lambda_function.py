@@ -4,7 +4,7 @@ from botocore.exceptions import BotoCoreError, NoCredentialsError
 
 # initialize dynamodb
 dynamodb = boto3.resource("dynamodb", region_name="us-east-1")
-table = dynamodb.Table("RecipeRecHist")
+table = dynamodb.Table("table_name")
 
 # handles requests for storing and retrieving user preferences and chat history
 def lambda_handler(event, context):

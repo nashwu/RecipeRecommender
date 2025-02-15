@@ -17,8 +17,13 @@ logging.basicConfig(level=logging.DEBUG)
 
 # load llm model
 MODEL_NAME = "meta-llama/Llama-3.2-3B-Instruct"
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-llm_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=torch.float16, device_map="auto")
+MODEL_CACHE_DIR = "/home/ubuntu/model"
+
+os.makedirs(MODEL_CACHE_DIR, exist_ok=True)
+
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME, cache_dir=MODEL_CACHE_DIR)
+llm_model = AutoModelForCausalLM.from_pretrained(MODEL_NAME, torch_dtype=torch.float16, device_map="auto", cache_dir=MODEL_CACHE_DIR)
+
 
 # load nlp models
 nlp = spacy.load("en_core_web_sm")  # replace with FoodBaseBERT-NER model
@@ -29,8 +34,13 @@ API_GATEWAY_URL = ""
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 cv_model_path = os.path.join(BASE_DIR, "api", "best.pt")
-cv_model = YOLO(cv_model_path)
+cv_model = None 
 
+def get_yolo_model():
+    global cv_model
+    if cv_model is None:
+        cv_model = YOLO(cv_model_path)  # load only once
+    return cv_model
 
 # for calling lambda functions
 def call_lambda(action, data):
@@ -168,7 +178,8 @@ def detect_ingredients(request):
         np_img = np.frombuffer(image, np.uint8)
         img = cv2.imdecode(np_img, cv2.IMREAD_COLOR)
 
-        results = cv_model(img)
+        yolo_model = get_yolo_model() 
+        results = yolo_model(img)
         detected_ingredients = set()
 
         for result in results:

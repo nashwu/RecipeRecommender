@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 
-// replace with urs
+// replace with ur aws EC2 ip address
 const API_BASE_URL = "";
-const LOCAL_DJANGO_URL = "http://127.0.0.1:8000/api/generate_recipe/";
-const IMAGE_UPLOAD_URL = "http://127.0.0.1:8000/api/detect_ingredients/";
+const LOCAL_DJANGO_URL = "";
+const IMAGE_UPLOAD_URL = "";
 
 const RecipeRecommender = () => {
     const [userId, setUserId] = useState("");
